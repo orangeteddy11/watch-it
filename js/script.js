@@ -63,7 +63,7 @@ async function fetchTopTvSeries() {
 // --- Generic display function for media ---
 function displayMedia(mediaItems, container) {
     container.innerHTML = ''; // Clear existing content
-    if (mediaItems.length = 0) {
+    if (mediaItems.length === 0) { // CORRECTED: Changed = to ===
         container.innerHTML = '<p>No results found.</p>';
         return;
     }
@@ -102,7 +102,7 @@ async function searchMoviesAndTv(event) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        const filteredResults = data.results.filter(item => item.media_type = 'movie' || item.media_type = 'tv');
+        const filteredResults = data.results.filter(item => item.media_type === 'movie' || item.media_type === 'tv'); // CORRECTED: Changed = to ===
         displayMedia(filteredResults, searchResultsDiv);
     } catch (error) {
         console.error('Error searching for movies/TV series:', error);

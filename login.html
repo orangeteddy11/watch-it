@@ -1,66 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Login - Watch It!</title>
-    <link rel="stylesheet" href="css/style.css" />
-    </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - My Movie & TV Series Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
 <body>
-    <div class="login-container">
-        <a href="index.html">
-            <img src="images/logo.png" alt="Watch It! Logo" class="logo" />
-        </a>
+  <div class="login-container">
+    <img src="images/logo.png" alt="Site Logo" class="logo" />
+    <form class="login-form" action="#" method="post">
+      <h2>Login</h2>
+      <label for="username">Username or Email</label>
+      <input type="text" id="username" name="username" required />
 
-        <form class="login-form" action="#" method="post">
-            <h2>Login</h2>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
 
-            <div id="message-area" style="color: red; margin-bottom: 10px;"></div>
-
-            <label for="username">Username or Email</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username or email" required aria-required="true" autocomplete="username">
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required aria-required="true" autocomplete="current-password">
-
-            <button type="submit">Login</button>
-        </form>
-
-        <div class="login-links">
-            <p><a href="forgot_password.html">Forgot Password?</a></p>
-            <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-            <p><a href="index.html">Back to Home</a></p>
-        </div>
-    </div>
-
-    <script>
-        // Basic client-side JavaScript for form submission (for demonstration)
-        // In a real application, you'd send this data to a server.
-        document.querySelector('.login-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const messageArea = document.getElementById('message-area');
-
-            // Basic validation (you'd do more robust validation on the server)
-            if (username === '' || password === '') {
-                messageArea.textContent = 'Please fill in both fields.';
-                return;
-            }
-
-            // Simulate a login attempt
-            if (username === 'testuser' && password === 'password123') {
-                messageArea.textContent = 'Login successful! Redirecting...';
-                messageArea.style.color = 'green';
-                setTimeout(() => {
-                    window.location.href = 'index.html'; // Redirect to home page
-                }, 1500);
-            } else {
-                messageArea.textContent = 'Invalid username or password.';
-                messageArea.style.color = 'red';
-            }
-        });
-    </script>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 </body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - My Movie & TV Series Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="login-container">
+    <img src="images/logo.png" alt="Site Logo" class="logo" />
+    <form class="login-form" action="#" method="post">
+      <h2>Login</h2>
+      <label for="username">Username or Email</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+
 </html>

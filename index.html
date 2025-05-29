@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Watch It!</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+<header>
+    <h1>🎬 My Movie & TV Series Picks</h1>
+    <nav>
+    </nav>
+</header>
+<a href="login.html" class="login-button">Login</a>
+
+<main>
+    <section class="search-section">
+        <form class="search-form" id="search-form">
+           <input type="text" placeholder="Search movies or TV series..." id="search-input" autocomplete="off" />
+            <button type="submit" id="search-button">Search</button>
+        </form>
+        <div id="search-results" class="grid">
+            </div>
+    </section>
+
+    <section class="category">
+        <h2>Top Movies</h2>
+        <div class="grid" id="top-movies-grid">
+            </div>
+    </section>
+
+    <section class="category">
+        <h2>Top TV Series</h2>
+        <div class="grid" id="top-tv-series-grid">
+            </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 Watch It</p>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

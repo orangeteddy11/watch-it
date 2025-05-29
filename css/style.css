@@ -1,0 +1,204 @@
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+.category {
+    margin-bottom: 40px;
+}
+
+.category h2 {
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Center cards in the grid */
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 200px;
+    min-height: 350px; /* Ensure consistent height for cards */
+    padding: 10px;
+    text-align: center;
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column;
+    justify-content: space-between; /* Push description to bottom */
+}
+
+.card img {
+    width: 100%;
+    max-height: 250px; /* Limit image height */
+    object-fit: cover; /* Crop image to fit */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    margin: 10px 0 5px;
+    font-size: 1.1em;
+}
+
+.card p {
+    font-size: 0.9em;
+    color: #666;
+    flex-grow: 1; /* Allow description to take available space */
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Search Section */
+.search-section {
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin-bottom: 40px; /* Add some space below search section */
+}
+
+.search-form {
+    display: inline-flex;
+    max-width: 600px;
+    width: 100%;
+    margin-bottom: 20px; /* Space between form and results */
+}
+
+.search-form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #555;
+}
+
+/* Style for search results container */
+#search-results {
+    margin-top: 20px;
+    display: none; /* Hidden by default, shown when results are present */
+    justify-content: center; /* Center results if few */
+}
+#search-results.active {
+    display: flex; /* Show when active */
+}
+
+
+/* Login Page Styles (unchanged, but included for completeness) */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #80f4; /* This color looks like a typo, perhaps #80f480? */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-container .logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.login-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #22435; /* This color looks like a typo, perhaps #224355? */
+}
+
+nav a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+nav a:hover {
+    color: #5349; /* This color looks like a typo, perhaps #534953? */
+}
+
+.login-button {
+    background-color: #03453; /* This color looks like a typo, perhaps #003453? */
+    color: black;
+    padding: 20px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.login-button:hover {
+    color: rgba(0,0,0,0.3);
+}

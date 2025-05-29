@@ -1,22 +1,16 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const barCtx = document.getElementById('barChart').getContext('2d');
     const pieCtx = document.getElementById('pieChart').getContext('2d');
 
-    async function fetchSubscriptionData() {
-        try {
-            const response = await fetch('../data/data.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            return data.streamingPlatforms;
-        } catch (error) {
-            console.error('Error fetching subscription data:', error);
-            return [];
-        }
-    }
-
-    const platformData = await fetchSubscriptionData();
+    // Conceptual data for the graphs
+    const platformData = [
+        {"name": "StreamPulse", "subscribersMillions": 310},
+        {"name": "CinemaFlow", "subscribersMillions": 190},
+        {"name": "EpicView", "subscribersMillions": 120},
+        {"name": "MegaFlix", "subscribersMillions": 75},
+        {"name": "QuantumTV", "subscribersMillions": 40},
+        {"name": "NovaStream", "subscribersMillions": 25}
+    ];
 
     if (platformData.length > 0) {
         const labels = platformData.map(platform => platform.name);
@@ -59,18 +53,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                             display: true,
                             text: 'Subscribers (Millions)'
                         }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Streaming Platform'
-                        }
                     }
                 },
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Global Streaming Platform Subscribers'
+                        text: 'Conceptual Streaming Platform Subscribers'
                     },
                     legend: {
                         display: false
@@ -112,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Subscriber Share by Platform'
+                        text: 'Conceptual Subscriber Share by Platform'
                     },
                     legend: {
                         position: 'right', // Place legend on the right
@@ -122,6 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     } else {
         barCtx.canvas.parentNode.innerHTML = '<p>Could not load chart data.</p>';
-        pieCtx.canvas.parentNode.innerHTML = ''; // Hide pie chart container if no data
+        pieCtx.canvas.parentNode.innerHTML = '';
     }
 });

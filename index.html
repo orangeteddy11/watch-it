@@ -3,18 +3,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Watch It!</title> <link rel="stylesheet" href="css/style.css" />
-</head>
+    <title>Watch It!</title>
+    <link rel="stylesheet" href="css/style.css" />
+    </head>
 
 <body>
 <header>
-    <h1>🎬 My Movie & TV Series Picks</h1>
-    <nav>
-        </nav>
+    <h1>🎬 Watch It!</h1> <nav>
+        <a href="login.html" id="login-button" class="header-button">Login</a>
+        <button id="logout-button" class="header-button" style="display:none;">Logout</button>
+    </nav>
 </header>
-<a href="login.html" class="login-button">Login</a>
 
 <main>
+    <section class="slider-section">
+        <h2>Trending Now</h2>
+        <div class="slider-container">
+            <button class="slider-arrow prev-arrow">&lt;</button>
+            <div class="slider-track" id="trending-movies-slider">
+                </div>
+            <button class="slider-arrow next-arrow">&gt;</button>
+        </div>
+    </section>
+
     <section class="search-section">
         <form class="search-form" id="search-form">
             <input type="text" placeholder="Search movies or TV series..." id="search-input" autocomplete="off" />
@@ -41,5 +52,6 @@
     <p>&copy; 2025 Watch It</p>
 </footer>
 
-<script src="js/script.js"></script> </body>
+<script src="js/script.js"></script>
+</body>
 </html>

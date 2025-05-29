@@ -15,9 +15,40 @@ body {
 header {
     background-color: #333;
     color: #fff;
-    padding: 20px 0;
+    padding: 20px; /* Added padding to the sides */
     text-align: center;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space out title and nav */
+    align-items: center; /* Vertically align items */
 }
+
+header h1 {
+    margin: 0; /* Remove default margin */
+}
+
+header nav {
+    /* Style for the navigation container */
+    display: flex;
+    gap: 15px; /* Space between buttons */
+}
+
+.header-button { /* Common style for login/logout buttons */
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 15px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.header-button:hover {
+    background-color: #0056b3;
+}
+
 
 main {
     padding: 20px;
@@ -134,7 +165,7 @@ footer {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #80f480; /* Corrected: Assuming a light green like #80f480 or a shade of grey like #F0F4F8 */
+    background-color: #f0f4f8; /* Changed to a lighter grey, more common for forms */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     text-align: center;
@@ -159,7 +190,7 @@ footer {
 
 .login-form input[type="text"],
 .login-form input[type="password"],
-.login-form input[type="email"] /* Added for signup/forgot password forms */ {
+.login-form input[type="email"] { /* Added for signup/forgot password forms */
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -178,10 +209,10 @@ footer {
 }
 
 .login-form button:hover {
-    background-color: #224355; /* Corrected: Assuming a darker shade like #224355 */
+    background-color: #555; /* Simpler hover */
 }
 
-/* New: Styles for login links */
+/* Styles for login links */
 .login-links {
     margin-top: 20px;
     font-size: 0.9em;
@@ -200,13 +231,67 @@ footer {
     text-decoration: underline;
 }
 
-
-/* Navigation and Login Button (from main site) */
-nav a {
-    margin-left: 15px;
-    text-decoration: none;
-    color: #fff; /* Changed to white to be visible on dark header */
+/* --- New Slider Styles --- */
+.slider-section {
+    padding: 20px;
+    background-color: #f0f0f0; /* Slightly different background */
+    text-align: center;
+    margin-bottom: 40px;
 }
 
-nav a:hover {
-    color: #eee; /* Light
+.slider-section h2 {
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.slider-container {
+    position: relative;
+    max-width: 1200px; /* Limit slider width */
+    margin: 0 auto;
+    overflow: hidden; /* Hide overflowing cards */
+}
+
+.slider-track {
+    display: flex;
+    gap: 20px; /* Space between cards */
+    padding: 10px 0; /* Some vertical padding */
+    transition: transform 0.5s ease-in-out; /* Smooth sliding animation */
+    /* Remove flex-wrap from .grid for the slider-track as we want it in a single line */
+}
+
+.slider-track .card {
+    flex-shrink: 0; /* Prevent cards from shrinking */
+    width: 200px; /* Keep consistent card width */
+    /* Ensure the card styles from .card above apply here too */
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 10; /* Ensure arrows are above cards */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.slider-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev-arrow {
+    left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.next-arrow {
+    right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

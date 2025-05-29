@@ -49,6 +49,14 @@ header nav {
     background-color: #0056b3;
 }
 
+/* New style for the active graphs button */
+.active-graph-button {
+    background-color: #28a745; /* A different color to indicate active */
+}
+
+.active-graph-button:hover {
+    background-color: #218838;
+}
 
 main {
     padding: 20px;

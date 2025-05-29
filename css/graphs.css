@@ -1,0 +1,54 @@
+/* Styles for the graphs page */
+
+.graphs-section {
+    padding: 20px;
+    background-color: #f8f8f8;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.graphs-section h2 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 2em;
+}
+
+.chart-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%; /* Responsive width */
+    max-width: 800px; /* Max width for larger screens */
+    height: 400px; /* Fixed height for consistency */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Specific styling for the pie chart container to make it square-like */
+.pie-chart-container {
+    max-width: 600px; /* Smaller max-width for pie chart */
+    height: 500px; /* Adjust height for a better pie chart aspect ratio */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .chart-container {
+        width: 95%;
+        height: 350px;
+    }
+    .pie-chart-container {
+        height: 450px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        height: 300px;
+    }
+    .pie-chart-container {
+        height: 400px;
+    }
+}

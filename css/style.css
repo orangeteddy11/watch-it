@@ -167,7 +167,7 @@ footer {
 }
 
 
-/* Login Page Styles */
+/* Login/Signup/Forgot Password Page Styles (reusing .login-container and .login-form for consistency) */
 .login-container {
     width: 100%;
     max-width: 400px;
@@ -179,17 +179,29 @@ footer {
     text-align: center;
 }
 
+/* Generic form styling for login, signup, forgot password */
+.login-form,
+.signup-form, /* Added for signup page */
+.forgot-password-form { /* Added for forgot password page */
+    /* All forms will share this basic styling */
+}
+
+
 .login-container .logo {
     width: 100px;
     margin-bottom: 20px;
 }
 
-.login-form h2 {
+.login-form h2,
+.signup-form h2, /* Added for signup page */
+.forgot-password-form h2 { /* Added for forgot password page */
     margin-bottom: 20px;
     color: #333;
 }
 
-.login-form label {
+.login-form label,
+.signup-form label, /* Added for signup page */
+.forgot-password-form label { /* Added for forgot password page */
     display: block;
     text-align: left;
     margin-bottom: 5px;
@@ -198,7 +210,11 @@ footer {
 
 .login-form input[type="text"],
 .login-form input[type="password"],
-.login-form input[type="email"] { /* Added for signup/forgot password forms */
+.login-form input[type="email"], /* Ensure email input is styled */
+.signup-form input[type="text"], /* Added for signup page */
+.signup-form input[type="password"], /* Added for signup page */
+.signup-form input[type="email"], /* Added for signup page */
+.forgot-password-form input[type="email"] { /* Added for forgot password page */
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -206,7 +222,9 @@ footer {
     border-radius: 5px;
 }
 
-.login-form button {
+.login-form button,
+.signup-form button, /* Added for signup page */
+.forgot-password-form button { /* Added for forgot password page */
     width: 100%;
     padding: 10px;
     background-color: #333;
@@ -216,7 +234,9 @@ footer {
     cursor: pointer;
 }
 
-.login-form button:hover {
+.login-form button:hover,
+.signup-form button:hover, /* Added for signup page */
+.forgot-password-form button:hover { /* Added for forgot password page */
     background-color: #555; /* Simpler hover */
 }
 

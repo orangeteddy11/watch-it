@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Login - Watch It!</title>
     <link rel="stylesheet" href="css/style.css" />
-    </head>
+</head>
 <body>
     <div class="login-container">
         <a href="index.html">
@@ -50,6 +50,7 @@
             if (username === 'testuser' && password === 'password123') {
                 messageArea.textContent = 'Login successful! Redirecting...';
                 messageArea.style.color = 'green';
+                localStorage.setItem('isLoggedIn', 'true'); // Set login status
                 setTimeout(() => {
                     window.location.href = 'index.html'; // Redirect to home page
                 }, 1500);

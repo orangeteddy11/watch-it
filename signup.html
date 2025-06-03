@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up - Watch It!</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div class="login-container">
+        <a href="index.html">
+            <img src="images/logo.jpg" alt="Watch It! Logo" class="logo" />
+        </a>
+
+        <form class="signup-form" action="#" method="post">
+            <h2>Sign Up</h2>
+
+            <div id="message-area" style="color: red; margin-bottom: 10px;"></div>
+
+            <label for="new-username">Username</label>
+            <input type="text" id="new-username" name="new-username" placeholder="Choose a username" required aria-required="true" autocomplete="new-username">
+
+            <label for="new-email">Email</label>
+            <input type="email" id="new-email" name="new-email" placeholder="Enter your email" required aria-required="true" autocomplete="email">
+
+            <label for="new-password">Password</label>
+            <input type="password" id="new-password" name="new-password" placeholder="Create a password" required aria-required="true" autocomplete="new-password">
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required aria-required="true" autocomplete="new-password">
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="login-links">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+            <p><a href="index.html">Back to Home</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.signup-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const username = document.getElementById('new-username').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const messageArea = document.getElementById('message-area');
+
+            if (username === '' || email === '' || password === '' || confirmPassword === '') {
+                messageArea.textContent = 'Please fill in all fields.';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                messageArea.textContent = 'Passwords do not match.';
+                return;
+            }
+
+            // Basic validation for demonstration purposes
+            if (password.length < 6) {
+                messageArea.textContent = 'Password must be at least 6 characters long.';
+                return;
+            }
+
+            // In a real application, you would send this data to a server
+            messageArea.textContent = 'Registration successful! Redirecting to login...';
+            messageArea.style.color = 'green';
+
+            setTimeout(() => {
+                window.location.href = 'login.html'; // Redirect to login page after successful registration
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

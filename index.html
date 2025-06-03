@@ -11,7 +11,8 @@
 <header>
     <h1>🎬 Watch It!</h1>
     <nav>
-        <a href="graphs/index.html" class="header-button">Graphs</a> <a href="login.html" id="login-button" class="header-button">Login</a>
+        <a href="graphs/index.html" class="header-button">Graphs</a>
+        <a href="login.html" id="login-button" class="header-button">Login</a>
         <button id="logout-button" class="header-button" style="display:none;">Logout</button>
     </nav>
 </header>
@@ -52,6 +53,17 @@
 <footer>
     <p>&copy; 2025 Watch It</p>
 </footer>
+
+<div id="videoPlayerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3 id="modalTitle"></h3>
+        <div class="video-wrapper">
+            <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <p id="modalOverview"></p>
+    </div>
+</div>
 
 <script src="js/script.js"></script>
 </body>

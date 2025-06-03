@@ -18,6 +18,13 @@ const nextArrow = document.querySelector('.next-arrow');
 const loginButton = document.getElementById('login-button');
 const logoutButton = document.getElementById('logout-button');
 
+// Video Player Modal Elements
+const videoPlayerModal = document.getElementById('videoPlayerModal');
+const closeButton = document.querySelector('.close-button');
+const modalTitle = document.getElementById('modalTitle');
+const videoFrame = document.getElementById('videoFrame');
+const modalOverview = document.getElementById('modalOverview');
+
 let currentSlidePosition = 0; // To track slider position
 const cardWidth = 220; // Card width + gap (200px width + 20px gap) - adjust if your card/gap changes
 
@@ -25,6 +32,12 @@ const cardWidth = 220; // Card width + gap (200px width + 20px gap) - adjust if 
 function createMediaCard(media) {
     const card = document.createElement('div');
     card.classList.add('card');
+    // Store media data on the card for later use when clicked
+    card.dataset.title = media.title || media.name || 'N/A';
+    card.dataset.overview = media.overview || 'No overview available.';
+    // A generic YouTube trailer URL for demonstration
+    // You might want to replace this with a more dynamic one if integrating with trailer APIs
+    card.dataset.videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0'; // Rick Astley - Never Gonna Give You Up
 
     const posterPath = media.poster_path ? `${TMDB_IMAGE_BASE_URL}${media.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image';
     const title = media.title || media.name || 'N/A'; // Use title for movies, name for TV series
@@ -37,6 +50,10 @@ function createMediaCard(media) {
         <h3>${title} (${year})</h3>
         <p>${overview}</p>
     `;
+
+    // Add click listener to open modal
+    card.addEventListener('click', () => openVideoModal(card.dataset.title, card.dataset.overview, card.dataset.videoUrl));
+
     return card;
 }
 
@@ -184,6 +201,21 @@ function handleLogout() {
     // In a real app, you'd also redirect to login page or home after logout
 }
 
+// --- Video Player Modal Functions ---
+function openVideoModal(title, overview, videoUrl) {
+    modalTitle.textContent = title;
+    modalOverview.textContent = overview;
+    videoFrame.src = videoUrl; // Set the video source
+    videoPlayerModal.style.display = 'block'; // Show the modal
+    document.body.style.overflow = 'hidden'; // Prevent scrolling background
+}
+
+function closeVideoModal() {
+    videoPlayerModal.style.display = 'none'; // Hide the modal
+    videoFrame.src = ''; // Stop the video by clearing its source
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
 // --- Initialize when the DOM is fully loaded ---
 document.addEventListener('DOMContentLoaded', () => {
     fetchTrendingMovies(); // Fetch movies for the new slider
@@ -198,21 +230,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Login/Logout event listeners
     logoutButton.addEventListener('click', handleLogout);
 
+    // Video Player Modal event listeners
+    closeButton.addEventListener('click', closeVideoModal);
+    // Close modal if user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === videoPlayerModal) {
+            closeVideoModal();
+        }
+    });
+
     // Initial check for login status
     checkLoginStatus();
-
-    // If you're on the login.html, you'd set isLoggedIn to true on successful login.
-    // For this example, let's just simulate a login from the homepage for testing:
-    // This is just for quick testing. In a real app, successful login from login.html
-    // would set this.
-    // For testing purposes, you could uncomment the following in script.js to simulate login
-    // if you visit index.html directly for the first time:
-    /*
-    if (!localStorage.getItem('isLoggedIn')) {
-        // Simulates a successful login after visiting login.html and logging in
-        // For actual testing, you can manually set localStorage.setItem('isLoggedIn', 'true');
-        // in your browser's console after successful login on login.html
-        // For this example, we'll assume the login.html's JS handles this.
-    }
-    */
 });

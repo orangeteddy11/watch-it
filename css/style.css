@@ -188,10 +188,9 @@ footer {
 /* Generic form styling for login, signup, forgot password */
 .login-form,
 .signup-form, /* Added for signup page */
-.forgot-password-form { /* Added for forgot password page */
-    /* All forms will share this basic styling */
+.forgot-password-form { /* All forms will share this basic styling */
+    /* No specific styles needed here, as the elements inside inherit from .login-container inputs/buttons */
 }
-
 
 .login-container .logo {
     width: 100px;
@@ -330,81 +329,170 @@ footer {
     border-bottom-right-radius: 0;
 }
 
-/* --- Video Player Modal Styles --- */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
-    display: flex; /* Use flexbox to center content */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
+/* --- Detail Page Styles (New) --- */
+.detail-page-main {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
     border-radius: 8px;
-    width: 90%; /* Responsive width */
-    max-width: 800px; /* Max width for larger screens */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.video-mockup-area {
     position: relative;
-    text-align: center;
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute; /* Position relative to modal-content */
-    top: 10px;
-    right: 20px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: #333;
-    text-decoration: none;
-}
-
-.modal-content h3 {
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    color: #333;
-}
-
-.video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio (height/width * 100%) */
-    height: 0;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    background-color: #000; /* Dark background for video area */
+    border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 15px;
-    background-color: #000; /* Black background for video */
+    margin-bottom: 20px;
 }
 
-.video-wrapper iframe {
+.video-mockup-area img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border: none;
+    object-fit: cover; /* Cover the area, cropping if necessary */
+    opacity: 0.7; /* Slightly dim the background image */
 }
 
-.modal-content p {
-    font-size: 1em;
+.play-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5em; /* Large play icon */
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 2; /* Above the image */
+}
+
+.play-icon-overlay:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.video-title-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); /* Gradient fade from bottom */
+    color: #fff;
+    text-align: left;
+    z-index: 1;
+}
+
+.video-title-overlay h2 {
+    margin: 0;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.detail-info {
+    text-align: left;
+    padding-top: 10px; /* Space between video area and info */
+}
+
+.detail-info p {
+    font-size: 1.1em;
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+    margin-top: 20px;
+}
+
+.watch-now-button, .add-to-list-button {
+    background-color: #e50914; /* Netflix red-like */
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-grow: 1; /* Allow buttons to grow */
+    text-align: center;
+}
+
+.watch-now-button:hover, .add-to-list-button:hover {
+    background-color: #b80710;
+}
+
+.add-to-list-button {
+    background-color: #6c757d; /* Grey for secondary action */
+}
+.add-to-list-button:hover {
+    background-color: #5a6268;
+}
+
+.loading-message, .error-message {
+    text-align: center;
+    font-size: 1.2em;
     color: #555;
-    text-align: left; /* Align overview text to the left */
-    max-height: 150px; /* Limit height of overview */
-    overflow-y: auto; /* Add scroll if overview is too long */
-    padding-right: 10px; /* Space for scrollbar */
+    padding: 50px;
+}
+
+/* Responsive adjustments for detail page */
+@media (min-width: 768px) {
+    .detail-section {
+        flex-direction: row; /* Side-by-side layout on larger screens */
+        align-items: flex-start; /* Align content to the top */
+    }
+
+    .video-mockup-area {
+        width: 65%; /* Video takes more width */
+        margin-bottom: 0; /* No bottom margin when side-by-side */
+    }
+
+    .detail-info {
+        width: 35%; /* Info takes remaining width */
+        padding-left: 30px; /* Space between video and info */
+        padding-top: 0;
+    }
+
+    .video-title-overlay h2 {
+        font-size: 3em; /* Larger title on bigger screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .detail-page-main {
+        padding: 15px;
+    }
+    .video-title-overlay h2 {
+        font-size: 1.8em;
+        padding-right: 60px; /* Make space for the play icon */
+    }
+    .play-icon-overlay {
+        font-size: 4em;
+    }
+    .watch-now-button, .add-to-list-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
 }

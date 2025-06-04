@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body>
-<header>
+<body id="home-page"> <header>
     <h1>🎬 Watch It!</h1>
     <nav>
         <a href="graphs/index.html" class="header-button">Graphs</a>
@@ -21,10 +20,10 @@
     <section class="slider-section">
         <h2>Trending Now</h2>
         <div class="slider-container">
-            <button class="slider-arrow prev-arrow">&lt;</button>
+            <button class="slider-arrow prev-arrow"><</button>
             <div class="slider-track" id="trending-movies-slider">
             </div>
-            <button class="slider-arrow next-arrow">&gt;</button>
+            <button class="slider-arrow next-arrow">></button>
         </div>
     </section>
 
@@ -51,19 +50,8 @@
 </main>
 
 <footer>
-    <p>&copy; 2025 Watch It</p>
+    <p>© 2025 Watch It</p>
 </footer>
-
-<div id="videoPlayerModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h3 id="modalTitle"></h3>
-        <div class="video-wrapper">
-            <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p id="modalOverview"></p>
-    </div>
-</div>
 
 <script src="js/script.js"></script>
 </body>

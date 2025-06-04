@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Watch It! - Details</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>🎬 Watch It!</h1>
+        <nav>
+            <a href="index.html" class="header-button">Home</a>
+            <a href="graphs/index.html" class="header-button">Graphs</a>
+            <a href="login.html" id="login-button" class="header-button">Login</a>
+            <button id="logout-button" class="header-button" style="display:none;">Logout</button>
+        </nav>
+    </header>
+
+    <main class="detail-page-main">
+        <section class="detail-section">
+            <div class="detail-content">
+                <div class="video-mockup-area">
+                    <img id="detailPoster" src="https://via.placeholder.com/600x400?text=Loading..." alt="Movie/Series Poster">
+                    <div class="play-icon-overlay">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-title-overlay">
+                        <h2 id="detailVideoTitle">Loading Title...</h2>
+                    </div>
+                </div>
+                <div class="detail-info">
+                    <p id="detailOverview">Loading overview...</p>
+                    <div class="detail-actions">
+                        <button class="watch-now-button">Watch Now (Concept)</button>
+                        <button class="add-to-list-button">Add to List (Concept)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="loading-message" id="loadingMessage">Loading movie/series details...</div>
+            <div class="error-message" id="errorMessage" style="display: none;">Could not load details.</div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Watch It</p>
+    </footer>
+
+    <script src="js/script.js"></script> <script>
+        const TMDB_API_KEY = 'f4c3b9dfc52b4928b8d4abd84544aab6'; // Use your actual TMDB key here
+        const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+        const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w1280'; // Larger image for backdrop
+
+        const detailVideoTitle = document.getElementById('detailVideoTitle');
+        const detailOverview = document.getElementById('detailOverview');
+        const detailPoster = document.getElementById('detailPoster');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        async function fetchMediaDetails(mediaType, id) {
+            const url = `${TMDB_BASE_URL}/${mediaType}/${id}?api_key=${TMDB_API_KEY}&language=en-US`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching media details:', error);
+                return null;
+            }
+        }
+
+        async function displayDetails() {
+            loadingMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const mediaId = urlParams.get('id');
+            const mediaType = urlParams.get('type'); // 'movie' or 'tv'
+
+            if (!mediaId || !mediaType) {
+                loadingMessage.style.display = 'none';
+                errorMessage.textContent = 'Invalid media ID or type provided.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const media = await fetchMediaDetails(mediaType, mediaId);
+
+            loadingMessage.style.display = 'none';
+
+            if (media) {
+                detailVideoTitle.textContent = media.title || media.name || 'Title Not Available';
+                detailOverview.textContent = media.overview || 'No overview available.';
+
+                const backdropPath = media.backdrop_path ? `${TMDB_IMAGE_BASE_URL}${media.backdrop_path}` : 'https://via.placeholder.com/1280x720?text=No+Image';
+                detailPoster.src = backdropPath;
+                detailPoster.alt = `${media.title || media.name} Backdrop`;
+
+            } else {
+                errorMessage.textContent = 'Failed to load details for this title.';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', displayDetails);
+    </script>
+</body>
+</html>

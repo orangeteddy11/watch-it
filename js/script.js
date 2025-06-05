@@ -8,11 +8,13 @@ const topTvSeriesGrid = document.getElementById('top-tv-series-grid');
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const searchResultsDiv = document.getElementById('search-results');
-const genreSelect = document.getElementById('genre-select'); // New: Genre select element
 
-const sliderSection = document.querySelector('.slider-section'); // For showing/hiding
-const topMoviesCategory = topMoviesGrid.closest('.category'); // For showing/hiding
-const topTvSeriesCategory = topTvSeriesGrid.closest('.category'); // For showing/hiding
+// New: Sidebar genre navigation
+const genreNav = document.querySelector('.genre-nav');
+
+const sliderSection = document.querySelector('.slider-section');
+const topMoviesCategory = topMoviesGrid.closest('.category');
+const topTvSeriesCategory = topTvSeriesGrid.closest('.category');
 
 const prevArrow = document.querySelector('.prev-arrow');
 const nextArrow = document.querySelector('.next-arrow');
@@ -24,7 +26,6 @@ let currentSlidePosition = 0;
 const cardWidth = 220;
 
 let allGenres = []; // To store fetched genres
-let currentMediaType = 'movie'; // Default media type for genre filtering if needed
 
 // --- Helper function to create a movie/TV series card ---
 function createMediaCard(media) {
@@ -79,9 +80,8 @@ async function fetchGenres(type) {
     }
 }
 
-// --- Populate Genre Select Dropdown ---
-async function populateGenreSelect() {
-    // Fetch both movie and TV genres and combine them, removing duplicates
+// --- Populate Genre Sidebar (Updated Function) ---
+async function populateGenreSidebar() {
     const movieGenres = await fetchGenres('movie');
     const tvGenres = await fetchGenres('tv');
 
@@ -90,42 +90,58 @@ async function populateGenreSelect() {
     combinedGenres.forEach(genre => uniqueGenresMap.set(genre.id, genre.name));
 
     allGenres = Array.from(uniqueGenresMap.values()).map((name, index) => ({ id: Array.from(uniqueGenresMap.keys())[index], name: name }));
-    allGenres.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
+    allGenres.sort((a, b) => a.name.localeCompare(b.name));
 
-    genreSelect.innerHTML = '<option value="">All Genres</option>'; // Reset dropdown
+    // Clear existing genres except "All Genres"
+    const allGenresLink = genreNav.querySelector('.genre-link[data-genre-id=""]');
+    genreNav.innerHTML = '';
+    genreNav.appendChild(allGenresLink); // Re-add "All Genres" link
+
     allGenres.forEach(genre => {
-        const option = document.createElement('option');
-        option.value = genre.id; // Use genre ID for filtering
-        option.textContent = genre.name;
-        genreSelect.appendChild(option);
+        const link = document.createElement('a');
+        link.href = "#"; // Prevent page reload
+        link.classList.add('genre-link');
+        link.dataset.genreId = genre.id;
+        link.textContent = genre.name;
+        genreNav.appendChild(link);
+    });
+
+    // Add click listeners to all genre links
+    genreNav.querySelectorAll('.genre-link').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default link behavior
+            const selectedId = event.target.dataset.genreId;
+            filterMediaByGenre(selectedId);
+
+            // Update active class for styling
+            genreNav.querySelectorAll('.genre-link').forEach(l => l.classList.remove('active-genre'));
+            event.target.classList.add('active-genre');
+        });
     });
 }
 
-// --- Filter Media by Genre (New Function) ---
-async function filterMediaByGenre() {
-    const selectedGenreId = genreSelect.value;
-    const selectedGenreName = genreSelect.options[genreSelect.selectedIndex].text;
+// --- Filter Media by Genre (Updated Function) ---
+async function filterMediaByGenre(selectedGenreId) {
+    // Reset search input
+    searchInput.value = '';
 
     // Hide main sections and show search results to display filtered content
     sliderSection.style.display = 'none';
     topMoviesCategory.style.display = 'none';
     topTvSeriesCategory.style.display = 'none';
-    searchResultsDiv.classList.add('active'); // Reuse searchResultsDiv for genre filtered content
+    searchResultsDiv.classList.add('active');
 
-    let url;
     if (selectedGenreId === "") { // "All Genres" selected
-        // If "All Genres" is selected, bring back the default views and clear search results
         searchResultsDiv.innerHTML = '';
         searchResultsDiv.classList.remove('active');
         sliderSection.style.display = 'block';
         topMoviesCategory.style.display = 'block';
         topTvSeriesCategory.style.display = 'block';
-        fetchTrendingMovies(); // Re-fetch initial content
+        fetchTrendingMovies();
         fetchTopMovies();
         fetchTopTvSeries();
         return;
     } else {
-        // Fetch movies and TV shows for the selected genre
         const moviesUrl = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${selectedGenreId}&language=en-US&sort_by=popularity.desc&page=1`;
         const tvUrl = `${TMDB_BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&with_genres=${selectedGenreId}&language=en-US&sort_by=popularity.desc&page=1`;
 
@@ -138,10 +154,8 @@ async function filterMediaByGenre() {
             const moviesData = await moviesResponse.json();
             const tvData = await tvResponse.json();
 
-            // Combine and display results
             const combinedResults = [...moviesData.results, ...tvData.results];
             if (combinedResults.length > 0) {
-                // Ensure media_type is set for correct detail page redirection
                 combinedResults.forEach(item => {
                     if (!item.media_type) {
                         item.media_type = moviesData.results.includes(item) ? 'movie' : 'tv';
@@ -149,6 +163,7 @@ async function filterMediaByGenre() {
                 });
                 displayMedia(combinedResults, searchResultsDiv);
             } else {
+                const selectedGenreName = allGenres.find(g => g.id == selectedGenreId)?.name || 'selected genre';
                 searchResultsDiv.innerHTML = `<p>No movies or TV series found for "${selectedGenreName}".</p>`;
             }
 
@@ -212,8 +227,9 @@ async function searchMoviesAndTv(event) {
     event.preventDefault();
     const query = searchInput.value.trim();
 
-    // Reset genre filter when performing a search
-    genreSelect.value = '';
+    // Reset active genre link when performing a search
+    genreNav.querySelectorAll('.genre-link').forEach(l => l.classList.remove('active-genre'));
+    genreNav.querySelector('.genre-link[data-genre-id=""]').classList.add('active-genre'); // Set "All Genres" as active
 
     if (!query) {
         alert('Please enter a movie or TV series title to search.');
@@ -291,15 +307,12 @@ function handleLogout() {
 // --- Initialize when the DOM is fully loaded ---
 document.addEventListener('DOMContentLoaded', () => {
     if (document.body.id === 'home-page') {
-        populateGenreSelect(); // Populate genres on load
+        populateGenreSidebar(); // Populate genres on load
         fetchTrendingMovies();
         fetchTopMovies();
         fetchTopTvSeries();
-
-        // Add event listener for genre selection change
-        genreSelect.addEventListener('change', filterMediaByGenre);
     }
-
+    
     searchForm.addEventListener('submit', searchMoviesAndTv);
 
     prevArrow.addEventListener('click', () => slide('prev'));

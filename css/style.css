@@ -58,9 +58,69 @@ header nav {
     background-color: #218838;
 }
 
-main {
-    padding: 20px;
+/* New: Main content wrapper for sidebar layout */
+.main-content-wrapper {
+    display: flex; /* Use flexbox for sidebar and main content */
+    min-height: calc(100vh - 60px - 40px); /* Full viewport height minus header and footer */
 }
+
+/* New: Sidebar styles */
+.sidebar {
+    width: 200px; /* Fixed width sidebar */
+    background-color: #222; /* Dark background */
+    color: #fff;
+    padding: 20px;
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    overflow-y: auto; /* Enable scrolling for long genre lists */
+    border-right: 1px solid #444;
+}
+
+.sidebar h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.genre-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between genre links */
+}
+
+.genre-link {
+    color: #ccc;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: block; /* Make the whole area clickable */
+}
+
+.genre-link:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+.genre-link.active-genre {
+    background-color: #007bff; /* Highlight active genre */
+    color: #fff;
+    font-weight: bold;
+}
+
+/* New: Main content area styles */
+.content-area {
+    flex-grow: 1; /* Allow content area to take remaining space */
+    padding: 20px; /* Padding for the content area */
+    background-color: #f4f4f4; /* Match body background */
+}
+
+
+/* Adjust main section padding inside content-area if needed */
+.content-area main { /* This might be redundant if main is just content-area */
+    padding: 0; /* Remove default main padding, now controlled by content-area */
+}
+
 
 .category {
     margin-bottom: 40px;
@@ -329,45 +389,7 @@ footer {
     border-bottom-right-radius: 0;
 }
 
-/* --- Genre Filter Section (New) --- */
-.genre-filter-section {
-    padding: 20px;
-    background-color: #e9ecef; /* Light grey background */
-    text-align: center;
-    margin-bottom: 40px;
-    border-radius: 8px;
-}
-
-.genre-filter-section h2 {
-    margin-bottom: 15px;
-    color: #444;
-    font-size: 1.8em;
-}
-
-.genre-select {
-    padding: 10px 15px;
-    font-size: 1em;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    background-color: #fff;
-    cursor: pointer;
-    width: auto; /* Adjusts to content */
-    max-width: 300px; /* Limit max width */
-    appearance: none; /* Remove default dropdown arrow */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.3L159.1%2C69.4c-4.6-4.6-12-4.6-16.6%2C0L5.4%2C197.3c-4.6%2C4.6-4.6%2C12%2C0%2C16.6s12%2C4.6%2C16.6%2C0l126.9-126.9l126.9%2C126.9c4.6%2C4.6%2C12%2C4.6%2C16.6%2C0S291.6%2C201.9%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 10px top 50%;
-    background-size: 12px auto;
-}
-
-.genre-select:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-
-/* --- Detail Page Styles (Updated) --- */
+/* --- Detail Page Styles --- */
 .detail-page-main {
     max-width: 1200px;
     margin: 20px auto;
@@ -449,7 +471,6 @@ footer {
     padding-top: 10px; /* Space between video area and info */
 }
 
-/* New: Styles for genres on detail page */
 .detail-genres {
     margin-bottom: 15px;
     font-size: 1.05em;
@@ -506,8 +527,9 @@ footer {
     padding: 50px;
 }
 
-/* Responsive adjustments for detail page */
+/* Responsive adjustments for general layout */
 @media (min-width: 768px) {
+    /* Detail page remains as is */
     .detail-section {
         flex-direction: row; /* Side-by-side layout on larger screens */
         align-items: flex-start; /* Align content to the top */
@@ -543,5 +565,37 @@ footer {
     .watch-now-button, .add-to-list-button {
         padding: 10px 20px;
         font-size: 1em;
+    }
+
+    /* Responsive adjustments for sidebar */
+    .main-content-wrapper {
+        flex-direction: column; /* Stack sidebar on top on small screens */
+    }
+
+    .sidebar {
+        width: 100%; /* Full width sidebar on small screens */
+        max-height: 200px; /* Limit height to prevent taking too much space */
+        border-right: none;
+        border-bottom: 1px solid #444; /* Add bottom border */
+    }
+
+    .genre-nav {
+        flex-direction: row; /* Make genre links horizontal */
+        flex-wrap: wrap; /* Allow genres to wrap */
+        justify-content: center; /* Center genre links */
+        gap: 8px; /* Smaller gap */
+    }
+
+    .genre-link {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+
+    .content-area {
+        padding: 15px; /* Adjust padding for small screens */
+    }
+
+    .search-section {
+        padding: 15px;
     }
 }

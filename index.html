@@ -17,46 +17,44 @@
     </nav>
 </header>
 
-<main>
-    <section class="slider-section">
-        <h2>Trending Now</h2>
-        <div class="slider-container">
-            <button class="slider-arrow prev-arrow"><</button>
-            <div class="slider-track" id="trending-movies-slider">
+<div class="main-content-wrapper"> <aside class="sidebar"> <h2>Genres</h2>
+        <nav class="genre-nav">
+            <a href="#" class="genre-link active-genre" data-genre-id="">All Genres</a>
+            </nav>
+    </aside>
+
+    <main class="content-area"> <section class="slider-section">
+            <h2>Trending Now</h2>
+            <div class="slider-container">
+                <button class="slider-arrow prev-arrow"><</button>
+                <div class="slider-track" id="trending-movies-slider">
+                </div>
+                <button class="slider-arrow next-arrow">></button>
             </div>
-            <button class="slider-arrow next-arrow">></button>
-        </div>
-    </section>
+        </section>
 
-    <section class="search-section">
-        <form class="search-form" id="search-form">
-            <input type="text" placeholder="Search movies or TV series..." id="search-input" autocomplete="off" />
-            <button type="submit" id="search-button">Search</button>
-        </form>
-        <div id="search-results" class="grid">
-        </div>
-    </section>
+        <section class="search-section">
+            <form class="search-form" id="search-form">
+                <input type="text" placeholder="Search movies or TV series..." id="search-input" autocomplete="off" />
+                <button type="submit" id="search-button">Search</button>
+            </form>
+            <div id="search-results" class="grid">
+            </div>
+        </section>
 
-    <section class="genre-filter-section"> <h2>Browse by Genre</h2>
-        <select id="genre-select" class="genre-select">
-            <option value="">All Genres</option>
-            </select>
-    </section>
+        <section class="category">
+            <h2>Top Movies</h2>
+            <div class="grid" id="top-movies-grid">
+            </div>
+        </section>
 
-    <section class="category">
-        <h2>Top Movies</h2>
-        <div class="grid" id="top-movies-grid">
-        </div>
-    </section>
-
-    <section class="category">
-        <h2>Top TV Series</h2>
-        <div class="grid" id="top-tv-series-grid">
-        </div>
-    </section>
-</main>
-
-<footer>
+        <section class="category">
+            <h2>Top TV Series</h2>
+            <div class="grid" id="top-tv-series-grid">
+            </div>
+        </section>
+    </main>
+</div> <footer>
     <p>&copy; 2025 Watch It</p>
 </footer>
 

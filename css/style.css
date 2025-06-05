@@ -187,8 +187,8 @@ footer {
 
 /* Generic form styling for login, signup, forgot password */
 .login-form,
-.signup-form, /* Added for signup page */
-.forgot-password-form { /* All forms will share this basic styling */
+.signup-form,
+.forgot-password-form {
     /* No specific styles needed here, as the elements inside inherit from .login-container inputs/buttons */
 }
 
@@ -198,15 +198,15 @@ footer {
 }
 
 .login-form h2,
-.signup-form h2, /* Added for signup page */
-.forgot-password-form h2 { /* Added for forgot password page */
+.signup-form h2,
+.forgot-password-form h2 {
     margin-bottom: 20px;
     color: #333;
 }
 
 .login-form label,
-.signup-form label, /* Added for signup page */
-.forgot-password-form label { /* Added for forgot password page */
+.signup-form label,
+.forgot-password-form label {
     display: block;
     text-align: left;
     margin-bottom: 5px;
@@ -215,11 +215,11 @@ footer {
 
 .login-form input[type="text"],
 .login-form input[type="password"],
-.login-form input[type="email"], /* Ensure email input is styled */
-.signup-form input[type="text"], /* Added for signup page */
-.signup-form input[type="password"], /* Added for signup page */
-.signup-form input[type="email"], /* Added for signup page */
-.forgot-password-form input[type="email"] { /* Added for forgot password page */
+.login-form input[type="email"],
+.signup-form input[type="text"],
+.signup-form input[type="password"],
+.signup-form input[type="email"],
+.forgot-password-form input[type="email"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -228,8 +228,8 @@ footer {
 }
 
 .login-form button,
-.signup-form button, /* Added for signup page */
-.forgot-password-form button { /* Added for forgot password page */
+.signup-form button,
+.forgot-password-form button {
     width: 100%;
     padding: 10px;
     background-color: #333;
@@ -240,8 +240,8 @@ footer {
 }
 
 .login-form button:hover,
-.signup-form button:hover, /* Added for signup page */
-.forgot-password-form button:hover { /* Added for forgot password page */
+.signup-form button:hover,
+.forgot-password-form button:hover {
     background-color: #555; /* Simpler hover */
 }
 
@@ -329,7 +329,45 @@ footer {
     border-bottom-right-radius: 0;
 }
 
-/* --- Detail Page Styles (New) --- */
+/* --- Genre Filter Section (New) --- */
+.genre-filter-section {
+    padding: 20px;
+    background-color: #e9ecef; /* Light grey background */
+    text-align: center;
+    margin-bottom: 40px;
+    border-radius: 8px;
+}
+
+.genre-filter-section h2 {
+    margin-bottom: 15px;
+    color: #444;
+    font-size: 1.8em;
+}
+
+.genre-select {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    width: auto; /* Adjusts to content */
+    max-width: 300px; /* Limit max width */
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.3L159.1%2C69.4c-4.6-4.6-12-4.6-16.6%2C0L5.4%2C197.3c-4.6%2C4.6-4.6%2C12%2C0%2C16.6s12%2C4.6%2C16.6%2C0l126.9-126.9l126.9%2C126.9c4.6%2C4.6%2C12%2C4.6%2C16.6%2C0S291.6%2C201.9%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px auto;
+}
+
+.genre-select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+
+/* --- Detail Page Styles (Updated) --- */
 .detail-page-main {
     max-width: 1200px;
     margin: 20px auto;
@@ -410,6 +448,17 @@ footer {
     text-align: left;
     padding-top: 10px; /* Space between video area and info */
 }
+
+/* New: Styles for genres on detail page */
+.detail-genres {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    color: #666;
+}
+.detail-genres strong {
+    color: #333;
+}
+
 
 .detail-info p {
     font-size: 1.1em;

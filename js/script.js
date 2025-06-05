@@ -1,5 +1,4 @@
-const TMDB_API_KEY = 'f4c3b9dfc52b4928b8d4abd84549aab6'; // Make sure this key is the same as in detail.html
-
+const TMDB_API_KEY = 'f4c3b9dfc52b4928b8d4abd84549aab6';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -9,6 +8,11 @@ const topTvSeriesGrid = document.getElementById('top-tv-series-grid');
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const searchResultsDiv = document.getElementById('search-results');
+const genreSelect = document.getElementById('genre-select'); // New: Genre select element
+
+const sliderSection = document.querySelector('.slider-section'); // For showing/hiding
+const topMoviesCategory = topMoviesGrid.closest('.category'); // For showing/hiding
+const topTvSeriesCategory = topTvSeriesGrid.closest('.category'); // For showing/hiding
 
 const prevArrow = document.querySelector('.prev-arrow');
 const nextArrow = document.querySelector('.next-arrow');
@@ -18,6 +22,9 @@ const logoutButton = document.getElementById('logout-button');
 
 let currentSlidePosition = 0;
 const cardWidth = 220;
+
+let allGenres = []; // To store fetched genres
+let currentMediaType = 'movie'; // Default media type for genre filtering if needed
 
 // --- Helper function to create a movie/TV series card ---
 function createMediaCard(media) {
@@ -36,9 +43,8 @@ function createMediaCard(media) {
         <p>${overview}</p>
     `;
 
-    // New: Add click listener to navigate to detail.html
     card.addEventListener('click', () => {
-        const mediaType = media.media_type === 'movie' ? 'movie' : 'tv'; // Ensure correct type for TMDB
+        const mediaType = media.media_type === 'movie' ? 'movie' : 'tv';
         window.location.href = `detail.html?id=${media.id}&type=${mediaType}`;
     });
 
@@ -55,6 +61,102 @@ function displayMedia(mediaItems, container) {
     mediaItems.forEach(item => {
         container.appendChild(createMediaCard(item));
     });
+}
+
+// --- Fetch Genres ---
+async function fetchGenres(type) {
+    const url = `${TMDB_BASE_URL}/genre/${type}/list?api_key=${TMDB_API_KEY}&language=en-US`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data.genres;
+    } catch (error) {
+        console.error(`Error fetching ${type} genres:`, error);
+        return [];
+    }
+}
+
+// --- Populate Genre Select Dropdown ---
+async function populateGenreSelect() {
+    // Fetch both movie and TV genres and combine them, removing duplicates
+    const movieGenres = await fetchGenres('movie');
+    const tvGenres = await fetchGenres('tv');
+
+    const combinedGenres = [...movieGenres, ...tvGenres];
+    const uniqueGenresMap = new Map();
+    combinedGenres.forEach(genre => uniqueGenresMap.set(genre.id, genre.name));
+
+    allGenres = Array.from(uniqueGenresMap.values()).map((name, index) => ({ id: Array.from(uniqueGenresMap.keys())[index], name: name }));
+    allGenres.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
+
+    genreSelect.innerHTML = '<option value="">All Genres</option>'; // Reset dropdown
+    allGenres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre.id; // Use genre ID for filtering
+        option.textContent = genre.name;
+        genreSelect.appendChild(option);
+    });
+}
+
+// --- Filter Media by Genre (New Function) ---
+async function filterMediaByGenre() {
+    const selectedGenreId = genreSelect.value;
+    const selectedGenreName = genreSelect.options[genreSelect.selectedIndex].text;
+
+    // Hide main sections and show search results to display filtered content
+    sliderSection.style.display = 'none';
+    topMoviesCategory.style.display = 'none';
+    topTvSeriesCategory.style.display = 'none';
+    searchResultsDiv.classList.add('active'); // Reuse searchResultsDiv for genre filtered content
+
+    let url;
+    if (selectedGenreId === "") { // "All Genres" selected
+        // If "All Genres" is selected, bring back the default views and clear search results
+        searchResultsDiv.innerHTML = '';
+        searchResultsDiv.classList.remove('active');
+        sliderSection.style.display = 'block';
+        topMoviesCategory.style.display = 'block';
+        topTvSeriesCategory.style.display = 'block';
+        fetchTrendingMovies(); // Re-fetch initial content
+        fetchTopMovies();
+        fetchTopTvSeries();
+        return;
+    } else {
+        // Fetch movies and TV shows for the selected genre
+        const moviesUrl = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${selectedGenreId}&language=en-US&sort_by=popularity.desc&page=1`;
+        const tvUrl = `${TMDB_BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&with_genres=${selectedGenreId}&language=en-US&sort_by=popularity.desc&page=1`;
+
+        try {
+            const [moviesResponse, tvResponse] = await Promise.all([
+                fetch(moviesUrl),
+                fetch(tvUrl)
+            ]);
+
+            const moviesData = await moviesResponse.json();
+            const tvData = await tvResponse.json();
+
+            // Combine and display results
+            const combinedResults = [...moviesData.results, ...tvData.results];
+            if (combinedResults.length > 0) {
+                // Ensure media_type is set for correct detail page redirection
+                combinedResults.forEach(item => {
+                    if (!item.media_type) {
+                        item.media_type = moviesData.results.includes(item) ? 'movie' : 'tv';
+                    }
+                });
+                displayMedia(combinedResults, searchResultsDiv);
+            } else {
+                searchResultsDiv.innerHTML = `<p>No movies or TV series found for "${selectedGenreName}".</p>`;
+            }
+
+        } catch (error) {
+            console.error('Error filtering by genre:', error);
+            searchResultsDiv.innerHTML = '<p>Error filtering content by genre. Please try again.</p>';
+        }
+    }
 }
 
 // --- Fetch and Display Trending Movies for Slider ---
@@ -105,24 +207,27 @@ async function fetchTopTvSeries() {
     }
 }
 
-// --- Search functionality ---
+// --- Search functionality (Modified to reset genre filter) ---
 async function searchMoviesAndTv(event) {
     event.preventDefault();
     const query = searchInput.value.trim();
+
+    // Reset genre filter when performing a search
+    genreSelect.value = '';
 
     if (!query) {
         alert('Please enter a movie or TV series title to search.');
         searchResultsDiv.innerHTML = '';
         searchResultsDiv.classList.remove('active');
-        document.querySelector('.slider-section').style.display = 'block';
-        topMoviesGrid.closest('.category').style.display = 'block';
-        topTvSeriesGrid.closest('.category').style.display = 'block';
+        sliderSection.style.display = 'block';
+        topMoviesCategory.style.display = 'block';
+        topTvSeriesCategory.style.display = 'block';
         return;
     }
 
-    document.querySelector('.slider-section').style.display = 'none';
-    topMoviesGrid.closest('.category').style.display = 'none';
-    topTvSeriesGrid.closest('.category').style.display = 'none';
+    sliderSection.style.display = 'none';
+    topMoviesCategory.style.display = 'none';
+    topTvSeriesCategory.style.display = 'none';
 
     searchResultsDiv.classList.add('active');
 
@@ -185,22 +290,21 @@ function handleLogout() {
 
 // --- Initialize when the DOM is fully loaded ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Only run these fetches if we are on the index.html page
-    if (document.body.id === 'home-page') { // Add an ID to your body tag in index.html for this check
+    if (document.body.id === 'home-page') {
+        populateGenreSelect(); // Populate genres on load
         fetchTrendingMovies();
         fetchTopMovies();
         fetchTopTvSeries();
+
+        // Add event listener for genre selection change
+        genreSelect.addEventListener('change', filterMediaByGenre);
     }
-    
+
     searchForm.addEventListener('submit', searchMoviesAndTv);
 
-    // Slider event listeners
     prevArrow.addEventListener('click', () => slide('prev'));
     nextArrow.addEventListener('click', () => slide('next'));
 
-    // Login/Logout event listeners
     logoutButton.addEventListener('click', handleLogout);
-
-    // Initial check for login status
     checkLoginStatus();
 });

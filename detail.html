@@ -31,6 +31,8 @@
                     </div>
                 </div>
                 <div class="detail-info">
+                    <div class="detail-genres" id="detailGenres">
+                        </div>
                     <p id="detailOverview">Loading overview...</p>
                     <div class="detail-actions">
                         <button class="watch-now-button">Watch Now (Concept)</button>
@@ -48,15 +50,27 @@
     </footer>
 
     <script src="js/script.js"></script> <script>
-        const TMDB_API_KEY = 'f4c3b9dfc52b4928b8d4abd84544aab6'; // Use your actual TMDB key here
+        const TMDB_API_KEY = 'f4c3b9dfc52b4928b8d4abd84549aab6'; // Use your actual TMDB key here
         const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
         const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w1280'; // Larger image for backdrop
 
         const detailVideoTitle = document.getElementById('detailVideoTitle');
         const detailOverview = document.getElementById('detailOverview');
         const detailPoster = document.getElementById('detailPoster');
+        const detailGenres = document.getElementById('detailGenres'); // New: Genres element
         const loadingMessage = document.getElementById('loadingMessage');
         const errorMessage = document.getElementById('errorMessage');
+
+        let allGenresMap = new Map(); // To store genres by ID for lookup
+
+        async function fetchGenresAndPopulateMap() {
+            const movieGenres = await fetch(`${TMDB_BASE_URL}/genre/movie/list?api_key=${TMDB_API_KEY}&language=en-US`).then(res => res.json()).then(data => data.genres);
+            const tvGenres = await fetch(`${TMDB_BASE_URL}/genre/tv/list?api_key=${TMDB_API_KEY}&language=en-US`).then(res => res.json()).then(data => data.genres);
+
+            [...movieGenres, ...tvGenres].forEach(genre => {
+                allGenresMap.set(genre.id, genre.name);
+            });
+        }
 
         async function fetchMediaDetails(mediaType, id) {
             const url = `${TMDB_BASE_URL}/${mediaType}/${id}?api_key=${TMDB_API_KEY}&language=en-US`;
@@ -77,9 +91,11 @@
             loadingMessage.style.display = 'block';
             errorMessage.style.display = 'none';
 
+            await fetchGenresAndPopulateMap(); // Ensure genres are loaded first
+
             const urlParams = new URLSearchParams(window.location.search);
             const mediaId = urlParams.get('id');
-            const mediaType = urlParams.get('type'); // 'movie' or 'tv'
+            const mediaType = urlParams.get('type');
 
             if (!mediaId || !mediaType) {
                 loadingMessage.style.display = 'none';
@@ -99,6 +115,14 @@
                 const backdropPath = media.backdrop_path ? `${TMDB_IMAGE_BASE_URL}${media.backdrop_path}` : 'https://via.placeholder.com/1280x720?text=No+Image';
                 detailPoster.src = backdropPath;
                 detailPoster.alt = `${media.title || media.name} Backdrop`;
+
+                // Display genres
+                if (media.genres && media.genres.length > 0) {
+                    const genreNames = media.genres.map(genre => genre.name);
+                    detailGenres.innerHTML = `<p><strong>Genres:</strong> ${genreNames.join(', ')}</p>`;
+                } else {
+                    detailGenres.innerHTML = '<p><strong>Genres:</strong> N/A</p>';
+                }
 
             } else {
                 errorMessage.textContent = 'Failed to load details for this title.';
